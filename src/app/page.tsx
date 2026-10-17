@@ -3,6 +3,7 @@ import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
 import { ProductCard } from "@/components/product-card";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/constants";
+import { ShopShell } from "@/components/shop-shell";
 import { db } from "@/lib/db";
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ const STEPS = [
   { n: "3", title: "حدد موعد التوصيل", text: "اختر اليوم والفترة التي تناسبك وادفع عند الاستلام." },
 ];
 
-export default async function HomePage() {
+async function HomeContent() {
   const [categories, featured] = await Promise.all([
     db.category.findMany({ orderBy: { sortOrder: "asc" }, include: { _count: { select: { products: { where: { active: true } } } } } }),
     db.product.findMany({ where: { active: true, stock: { gt: 0 }, requiresPrescription: false }, orderBy: { name: "asc" }, take: 8, include: { category: true } }),
@@ -119,5 +120,13 @@ export default async function HomePage() {
         </Link>
       </section>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <ShopShell>
+      <HomeContent />
+    </ShopShell>
   );
 }

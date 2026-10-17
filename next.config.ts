@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -17,6 +18,7 @@ const csp = [
 
 const config: NextConfig = {
   poweredByHeader: false,
+  turbopack: { root: path.resolve(/*turbopackIgnore: true*/ process.cwd()) },
   reactStrictMode: true,
   async headers() {
     return [

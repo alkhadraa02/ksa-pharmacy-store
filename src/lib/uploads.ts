@@ -8,7 +8,7 @@ export type DetectedType = { mime: string; ext: string };
 export class UploadError extends Error {}
 
 export function uploadsDir(): string {
-  return path.resolve(process.env.UPLOAD_DIR ?? path.join(process.cwd(), "uploads", "prescriptions"));
+  return path.resolve(/*turbopackIgnore: true*/ process.env.UPLOAD_DIR ?? path.join(/*turbopackIgnore: true*/ process.cwd(), "uploads", "prescriptions"));
 }
 
 /** Detects the real file type from magic bytes - the client-sent MIME type is never trusted. */
@@ -33,7 +33,7 @@ export async function saveUpload(file: File): Promise<SavedUpload> {
   const dir = uploadsDir();
   await mkdir(dir, { recursive: true });
   const fileName = `${randomUUID()}.${type.ext}`;
-  await writeFile(path.join(dir, fileName), bytes, { flag: "wx" });
+  await writeFile(path.join(/*turbopackIgnore: true*/ dir, fileName), bytes, { flag: "wx" });
   const originalName = path.basename(file.name || "prescription").slice(0, 120);
   return { fileName, mimeType: type.mime, size: bytes.length, originalName };
 }
@@ -41,7 +41,7 @@ export async function saveUpload(file: File): Promise<SavedUpload> {
 export async function readUpload(fileName: string): Promise<Buffer | null> {
   if (!/^[0-9a-f-]{36}\.(pdf|jpg|png|webp)$/.test(fileName)) return null;
   try {
-    return await readFile(path.join(uploadsDir(), fileName));
+    return await readFile(path.join(/*turbopackIgnore: true*/ uploadsDir(), fileName));
   } catch {
     return null;
   }
