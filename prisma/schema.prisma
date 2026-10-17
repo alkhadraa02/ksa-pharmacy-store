@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  role         String    @default("ADMIN")
+  createdAt    DateTime  @default(now())
+  sessions     Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  description String    @default("")
+  icon        String    @default("💊")
+  sortOrder   Int       @default(0)
+  products    Product[]
+}
+
+model Product {
+  id                   String      @id @default(cuid())
+  slug                 String      @unique
+  name                 String
+  brand                String      @default("")
+  description          String      @default("")
+  activeIngredient     String      @default("")
+  dosageForm           String      @default("")
+  strength             String      @default("")
+  requiresPrescription Boolean     @default(false)
+  priceHalala          Int
+  stock                Int         @default(0)
+  lowStockThreshold    Int         @default(10)
+  expiryDate           DateTime?
+  active               Boolean     @default(true)
+  categoryId           String
+  category             Category    @relation(fields: [categoryId], references: [id])
+  orderItems           OrderItem[]
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+
+  @@index([categoryId])
+  @@index([active])
+}
+
+model Customer {
+  id            String         @id @default(cuid())
+  name          String
+  phone         String         @unique
+  email         String?
+  city          String         @default("")
+  createdAt     DateTime       @default(now())
+  orders        Order[]
+  prescriptions Prescription[]
+}
+
+model Prescription {
+  id           String    @id @default(cuid())
+  customerId   String?
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  customerName String
+  phone        String
+  filePath     String    @default("")
+  originalName String    @default("")
+  mimeType     String    @default("")
+  size         Int       @default(0)
+  status       String    @default("PENDING")
+  reviewNote   String    @default("")
+  reviewedAt   DateTime?
+  reviewedBy   String?
+  createdAt    DateTime  @default(now())
+  orders       Order[]
+
+  @@index([status])
+}
+
+model Order {
+  id                String        @id @default(cuid())
+  number            String        @unique
+  customerId        String
+  customer          Customer      @relation(fields: [customerId], references: [id])
+  status            String        @default("NEW")
+  paymentMethod     String        @default("COD")
+  paymentStatus     String        @default("UNPAID")
+  paymentRef        String        @default("")
+  address           String
+  city              String
+  notes             String        @default("")
+  deliveryDate      String
+  deliverySlot      String
+  subtotalHalala    Int
+  deliveryFeeHalala Int
+  totalHalala       Int
+  vatHalala         Int
+  prescriptionId    String?
+  prescription      Prescription? @relation(fields: [prescriptionId], references: [id])
+  items             OrderItem[]
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([customerId])
+}
+
+model OrderItem {
+  id                   String  @id @default(cuid())
+  orderId              String
+  order                Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId            String
+  product              Product @relation(fields: [productId], references: [id])
+  name                 String
+  unitPriceHalala      Int
+  quantity             Int
+  requiresPrescription Boolean @default(false)
+
+  @@index([orderId])
+}
+
+model Consultation {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  topic     String
+  message   String
+  status    String   @default("NEW")
+  createdAt DateTime @default(now())
+}
