@@ -87,6 +87,7 @@ export async function createOrder(input: OrderInput) {
       prescription = await tx.prescription.findUnique({ where: { id: input.prescriptionId } });
       if (!prescription || prescription.filePath === "") throw new OrderError("الوصفة غير موجودة، ارفعها من جديد");
       if (prescription.status === "REJECTED") throw new OrderError("الوصفة المرفوعة مرفوضة، ارفع وصفة جديدة");
+      if (prescription.phone !== input.phone) throw new OrderError("رقم جوال الوصفة لا يطابق رقم جوال الطلب");
     }
 
     const lines = merged.map((m) => ({ product: byId.get(m.productId)!, quantity: m.quantity }));
