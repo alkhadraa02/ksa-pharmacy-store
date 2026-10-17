@@ -31,19 +31,19 @@ export function SiteHeader({ categories }: { categories: { slug: string; name: s
         </div>
       </div>
       <nav aria-label="التنقل الرئيسي" className="border-t border-line bg-brand-soft">
-        <ul className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-1 text-sm font-semibold">
+        <ul className="mx-auto flex max-w-6xl flex-wrap gap-x-1 px-4 py-1 text-sm font-semibold">
           {categories.map((c) => (
-            <li key={c.slug} className="shrink-0">
+            <li key={c.slug} className="min-w-0">
               <Link href={`/category/${c.slug}`} className="inline-flex min-h-10 items-center rounded-lg px-3 hover:bg-surface">
                 {c.name}
               </Link>
             </li>
           ))}
-          <li className="shrink-0 self-center text-line" aria-hidden="true">
+          <li className="hidden shrink-0 self-center text-line md:block" aria-hidden="true">
             |
           </li>
           {NAV.map((n) => (
-            <li key={n.href} className="shrink-0">
+            <li key={n.href} className="min-w-0">
               <Link href={n.href} className="inline-flex min-h-10 items-center rounded-lg px-3 text-brand-strong hover:bg-surface">
                 {n.label}
               </Link>

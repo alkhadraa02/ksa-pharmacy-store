@@ -26,10 +26,10 @@ async function HomeContent() {
   ]);
 
   return (
-    <div className="grid gap-10">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <JsonLd data={{ "@context": "https://schema.org", "@type": "Pharmacy", name: SITE_NAME, url: SITE_URL, description: SITE_TAGLINE, areaServed: { "@type": "Country", name: "المملكة العربية السعودية" } }} />
 
-      <section className="card grid gap-5 bg-brand-soft p-6 md:grid-cols-[1.4fr_1fr] md:items-center md:p-10" aria-labelledby="hero-title">
+      <section className="card grid grid-cols-[minmax(0,1fr)] gap-5 bg-brand-soft p-6 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-center md:p-10" aria-labelledby="hero-title">
         <div className="grid gap-4">
           <h1 id="hero-title" className="text-3xl font-extrabold leading-tight text-brand-strong md:text-4xl">
             صيدليتك في جيبك، ودواؤك يصلك حيث أنت
@@ -80,7 +80,7 @@ async function HomeContent() {
             عرض الكل
           </Link>
         </div>
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((p) => (
             <li key={p.id} className="min-w-0">
               <ProductCard product={p} />

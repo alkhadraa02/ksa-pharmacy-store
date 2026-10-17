@@ -8,7 +8,7 @@ export async function ProductBrowser({ basePath, filters, fixedCategory }: { bas
   const hasFilters = Boolean(filters.q || filters.rx || filters.form || filters.available || (!fixedCategory && filters.category));
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[16rem_1fr]">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[16rem_minmax(0,1fr)]">
       <form action={basePath} method="get" className="card grid h-fit gap-3 p-4" aria-label="تصفية المنتجات">
         <h2 className="text-lg font-bold">بحث وتصفية</h2>
         <div>
@@ -101,7 +101,7 @@ export async function ProductBrowser({ basePath, filters, fixedCategory }: { bas
             </div>
           </div>
         ) : (
-          <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {products.map((p) => (
               <li key={p.id} className="min-w-0">
                 <ProductCard product={p} />

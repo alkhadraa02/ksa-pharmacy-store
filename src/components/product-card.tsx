@@ -26,29 +26,29 @@ export function ProductCard({ product }: { product: CardProduct }) {
     <article className="card flex min-w-0 flex-col gap-3 p-4">
       <div className="flex items-start justify-between gap-2">
         <RxBadge requiresPrescription={product.requiresPrescription} />
-        {product.category ? <span className="hint truncate">{product.category.name}</span> : null}
+        {product.category ? <span className="hint min-w-0 truncate">{product.category.name}</span> : null}
       </div>
       <h3 className="min-w-0 text-base font-bold leading-snug">
         <Link href={`/products/${product.slug}`} className="hover:text-brand-strong hover:underline">
           {product.name}
         </Link>
       </h3>
-      <dl className="hint grid gap-0.5">
+      <dl className="hint grid min-w-0 gap-0.5">
         {product.brand ? (
-          <div className="flex gap-1">
-            <dt>الماركة:</dt>
-            <dd className="truncate">{product.brand}</dd>
+          <div className="flex min-w-0 gap-1">
+            <dt className="shrink-0">الماركة:</dt>
+            <dd className="min-w-0 truncate">{product.brand}</dd>
           </div>
         ) : null}
         {product.activeIngredient && product.activeIngredient !== "—" ? (
-          <div className="flex gap-1">
-            <dt>المادة الفعالة:</dt>
-            <dd className="truncate">{product.activeIngredient}</dd>
+          <div className="flex min-w-0 gap-1">
+            <dt className="shrink-0">المادة الفعالة:</dt>
+            <dd className="min-w-0 truncate">{product.activeIngredient}</dd>
           </div>
         ) : null}
-        <div className="flex gap-1">
-          <dt>الشكل:</dt>
-          <dd className="truncate">
+        <div className="flex min-w-0 gap-1">
+          <dt className="shrink-0">الشكل:</dt>
+          <dd className="min-w-0 truncate">
             {product.dosageForm}
             {product.strength && product.strength !== "—" ? ` · ${product.strength}` : ""}
           </dd>

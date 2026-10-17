@@ -22,7 +22,7 @@ export function pickFilters(sp: Search): ProductFilters {
 export default async function ProductsPage({ searchParams }: { searchParams: Promise<Search> }) {
   const filters = pickFilters(await searchParams);
   return (
-    <div className="grid gap-4">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-4">
       <h1 className="text-3xl font-extrabold">كل المنتجات</h1>
       <ProductBrowser basePath="/products" filters={filters} />
     </div>
